@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Objection 1</string>
+    <string name="app_name">Objection</string>
     <string name="perfrence_file_key">res/values/shared_prefrences_locations.xml</string>
-
 </resources>
