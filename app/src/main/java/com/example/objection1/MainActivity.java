@@ -1,32 +1,21 @@
 package com.example.objection1;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
-import android.app.Application;
-import android.app.IntentService;
-import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.Service;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.AudioManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,6 +65,18 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(OnOffReceiver.SCREEN_TOGGLE_TAG, "onCreate: screenOnOffReceiver is registered.");
 
+       // sendingMessages location = new sendingMessages(this);
+
+        //LocationMaanger hello = location.getLocation()
+       // location.sendMessage();
+        Intent intent=new Intent(this,MainActivity.class);
+        PendingIntent pi= PendingIntent.getActivity(this, 0, intent,0);
+        SmsManager sms=SmsManager.getDefault();
+        sms.sendTextMessage("0507355597", null, "hey, I called the emergency button on 'Objection' and you are my" +
+                " emergency contact! this is my location right now: ", pi,null);
+
 
     }
+
+    //
 }
