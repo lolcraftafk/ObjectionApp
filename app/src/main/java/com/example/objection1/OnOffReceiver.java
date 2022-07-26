@@ -1,10 +1,13 @@
 package com.example.objection1;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.MediaRecorder;
 import android.os.CountDownTimer;
 import android.telephony.SmsManager;
@@ -12,6 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import java.io.File;
@@ -76,7 +80,7 @@ public class OnOffReceiver extends BroadcastReceiver implements LocationListener
         }
 
         Log.d(SCREEN_TOGGLE_TAG, "onReceive: " + timerDone);
-        if (count >= 3 && !timerDone) {
+        if (count >= 5 && !timerDone) {
             count = 0;
             notifications = new Notifications(context);
             if(!recording) {
@@ -90,7 +94,7 @@ public class OnOffReceiver extends BroadcastReceiver implements LocationListener
                 Log.d(SCREEN_TOGGLE_TAG, "onReceive: Stopped recording");
             }
 
-        } else if (count >= 3 && timerDone) {
+        } else if (count >= 5 && timerDone) {
             count = 0;
         }
     }
@@ -138,10 +142,23 @@ public class OnOffReceiver extends BroadcastReceiver implements LocationListener
 
     }
 
-    public void sendMessage(){
+    public void sendMessage() {
+        LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location a = locationManager.getLastKnownLocation(locationManager.getAllProviders().get(0));
         SmsManager sms=SmsManager.getDefault();
-        sms.sendTextMessage("0585301005", null, "hey, I called the emergency button on 'Objection' and you are my" +
-                " emergency contact! this is my location right now: "+"https://www.google.com/maps/search/?api=1&query="+latitude+"%2C"+longitude, null,null);    }
-
+        String message = "hey, I called the  right now: https://www.google.com/maps/search/?api=1&query=" + String.valueOf(a.getLatitude()) + "%2C"+ String.valueOf(a.getLongitude());
+        Log.d("TAG", "sendMessage: " + message);
+        sms.sendTextMessage("0507355597",null, message , null,null);
+    }
 }
 
