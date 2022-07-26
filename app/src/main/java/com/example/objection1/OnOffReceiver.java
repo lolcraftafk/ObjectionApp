@@ -3,11 +3,15 @@ package com.example.objection1;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
 import android.media.MediaRecorder;
 import android.os.CountDownTimer;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import java.io.File;
@@ -20,7 +24,7 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.Timer;
 
-public class OnOffReceiver extends BroadcastReceiver {
+public class OnOffReceiver extends BroadcastReceiver implements LocationListener {
 
     public final static String SCREEN_TOGGLE_TAG = "SCREEN_TOGGLE_TAG";
 
@@ -32,6 +36,8 @@ public class OnOffReceiver extends BroadcastReceiver {
     Boolean timerDone = true;
     CountDownTimer timer;
     Notifications notifications;
+    Double longitude;
+    Double latitude;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -76,6 +82,7 @@ public class OnOffReceiver extends BroadcastReceiver {
             if(!recording) {
                 startRecording();
                 notifications.createNotification(1,true,"Recording...", "The emergency sequence was sent, recording.", "The emergency sequence was sent, recording. Your emergency contacts were notified.", NotificationCompat.PRIORITY_HIGH);
+                sendMessage();
                 Log.d(SCREEN_TOGGLE_TAG, "onReceive: Started recording");
             } else {
                 stopRecording();
@@ -124,5 +131,17 @@ public class OnOffReceiver extends BroadcastReceiver {
         recording = false;
         Toast.makeText(mContext, "Recording stopped...", Toast.LENGTH_SHORT).show();
     }
+
+    public void onLocationChanged(@NonNull Location location) {
+        longitude=location.getLongitude();
+        latitude=location.getLatitude();
+
+    }
+
+    public void sendMessage(){
+        SmsManager sms=SmsManager.getDefault();
+        sms.sendTextMessage("0585301005", null, "hey, I called the emergency button on 'Objection' and you are my" +
+                " emergency contact! this is my location right now: "+"https://www.google.com/maps/search/?api=1&query="+latitude+"%2C"+longitude, null,null);    }
+
 }
 
