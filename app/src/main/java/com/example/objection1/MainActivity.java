@@ -69,11 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
         //LocationMaanger hello = location.getLocation()
        // location.sendMessage();
+
         Intent intent=new Intent(this,MainActivity.class);
-        PendingIntent pi= PendingIntent.getActivity(this, 0, intent,0);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent,0);
+
         SmsManager sms=SmsManager.getDefault();
         sms.sendTextMessage("0507355597", null, "hey, I called the emergency button on 'Objection' and you are my" +
-                " emergency contact! this is my location right now: ", pi,null);
+                " emergency contact! this is my location right now: ", null,null);
 
 
     }
