@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +11,64 @@
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-99dp">
+
+    </WebView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="150px"
+        android:background="#116AE0"
+        app:layout_constraintBottom_toBottomOf="@+id/webview"
+        app:menu="@menu/menu_bottom_nav"
+        tools:ignore="MissingConstraints" >
+
+        <Button
+            android:id="@+id/getHelpButton"
+            android:layout_marginLeft="10px"
+            android:layout_width="200px"
+            android:layout_height="match_parent"
+            android:onClick="getHelp"
+            android:text="Get Help"
+            />
+        <Button
+            android:id="@+id/lawyersButton"
+            android:layout_width="200px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="220px"
+            android:onClick="lawyersList"
+            android:drawableBottom="@drawable/ic_lawyers_button"
+
+            />
+        <Button
+            android:id="@+id/recordingsButton"
+            android:layout_width="200px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="430px"
+            android:onClick="recordingsList"
+            android:drawableBottom="@drawable/ic_recordings_button"
+            />
+        <Button
+            android:id="@+id/learnLawButton"
+            android:layout_width="200px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="640px"
+            android:onClick="lawLearnList"
+            android:drawableBottom="@drawable/ic_lawlist_button"
+            />
+        <Button
+            android:id="@+id/menuButton"
+            android:layout_width="200px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="850px"
+            android:onClick="menuButton"
+            android:drawableBottom="@drawable/ic_menu_button"
+            />
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
