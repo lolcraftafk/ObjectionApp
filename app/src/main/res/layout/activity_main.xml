@@ -24,8 +24,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/webview"
         app:menu="@menu/menu_bottom_nav"
         tools:ignore="MissingConstraints" >
-
-        <Button
+        
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/getHelpButton"
             android:layout_marginLeft="10px"
             android:layout_width="200px"
@@ -33,38 +33,37 @@
             android:onClick="getHelp"
             android:text="Get Help"
             />
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/lawyersButton"
             android:layout_width="200px"
             android:layout_height="match_parent"
             android:layout_marginLeft="220px"
             android:onClick="lawyersList"
-            android:drawableBottom="@drawable/ic_lawyers_button"
-
+            android:background="@drawable/ic_lawyers_button"
             />
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/recordingsButton"
             android:layout_width="200px"
             android:layout_height="match_parent"
             android:layout_marginLeft="430px"
             android:onClick="recordingsList"
-            android:drawableBottom="@drawable/ic_recordings_button"
+            android:background="@drawable/ic_recordings_button"
             />
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/learnLawButton"
             android:layout_width="200px"
             android:layout_height="match_parent"
             android:layout_marginLeft="640px"
             android:onClick="lawLearnList"
-            android:drawableBottom="@drawable/ic_lawlist_button"
+            android:background="@drawable/ic_lawlist_button"
             />
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/menuButton"
             android:layout_width="200px"
             android:layout_height="match_parent"
             android:layout_marginLeft="850px"
             android:onClick="menuButton"
-            android:drawableBottom="@drawable/ic_menu_button"
+            android:background="@drawable/ic_menu_button"
             />
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
