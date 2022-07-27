@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void lawyersList(View v){
-        Toast.makeText(this,"Coming Soon...",Toast.LENGTH_SHORT);
+        Toast.makeText(this,"Coming Soon...",Toast.LENGTH_SHORT).show();
     }
 
     public void recordingsList(View v){
@@ -111,11 +111,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void lawLearnList(View v){
-        Toast.makeText(this,"Coming Soon...",Toast.LENGTH_SHORT);
+        Toast.makeText(this,"Coming Soon...",Toast.LENGTH_SHORT).show();
     }
 
     public void menuButton(View v){
-        Toast.makeText(this,"Coming Soon...",Toast.LENGTH_SHORT);
+        myWebView.loadUrl("https://objection1.herokuapp.com/logout");
+        Toast.makeText(this,"Logged out",Toast.LENGTH_SHORT).show();
+
+
     }
     //
 }
