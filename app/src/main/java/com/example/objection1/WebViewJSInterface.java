@@ -134,7 +134,7 @@ public class WebViewJSInterface {
     //Asks for the required permissions
     @JavascriptInterface
     public void askForPermissions() {
-        ActivityCompat.requestPermissions(new MainActivity(), new String[]{  Manifest.permission.RECORD_AUDIO}, 0);
+        ActivityCompat.requestPermissions(new MainActivity(), new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.FOREGROUND_SERVICE, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.SEND_SMS}, 0);
     }
 
     //Adds local app media to "content://" files

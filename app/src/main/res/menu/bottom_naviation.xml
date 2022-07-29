@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_1"
+        android:enabled="true"
+        android:title="Get Help"
+        android:onClick="getHelp"/>
+    <item
+        android:id="@+id/page_2"
+        android:enabled="true"
+        android:icon="@drawable/ic_lawyers_button"
+        android:title="Lawyer List"
+        android:onClick="lawyersList"/>
+    <item
+        android:id="@+id/page_3"
+        android:enabled="true"
+        android:icon="@drawable/ic_recordings_button"
+        android:title="Recordings"
+        android:onClick="recordingsList"/>
+    <item
+        android:id="@+id/page_4"
+        android:enabled="true"
+        android:icon="@drawable/ic_lawlist_button"
+        android:title="Awareness"
+        android:onClick="lawLearnList"/>
+    <item
+        android:id="@+id/page_5"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_button"
+        android:title="Menu"
+        android:onClick="menuButton"/>
+</menu>

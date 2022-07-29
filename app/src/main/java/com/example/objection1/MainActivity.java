@@ -18,6 +18,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -53,11 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
         myWebView = (WebView) findViewById(R.id.webview);
 
-        menuButton = findViewById(R.id.menuButton);
-        learnLawButton = findViewById(R.id.learnLawButton);
-        lawyersButton = findViewById(R.id.lawyersButton);
-        recordingsButton  = findViewById(R.id.recordingsButton);
-        getHelpButton = findViewById(R.id.getHelpButton);
 
         WebSettings settings = myWebView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -97,24 +93,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getHelp(View v){
+    public void getHelp(MenuItem v){
         myWebView.loadUrl("https://objection1.herokuapp.com/emrn");
+
     }
 
-    public void lawyersList(View v){
+    public void lawyersList(MenuItem v){
         Toast.makeText(this,"Coming Soon...",Toast.LENGTH_SHORT).show();
     }
 
-    public void recordingsList(View v){
+    public void recordingsList(MenuItem v){
         Intent recordings = new Intent(this, VoiceRecordingsActivity.class);
         startActivity(recordings);
     }
 
-    public void lawLearnList(View v){
+    public void lawLearnList(MenuItem v){
         Toast.makeText(this,"Coming Soon...",Toast.LENGTH_SHORT).show();
     }
 
-    public void menuButton(View v){
+    public void menuButton(MenuItem v){
         myWebView.loadUrl("https://objection1.herokuapp.com/logout");
         Toast.makeText(this,"Logged out",Toast.LENGTH_SHORT).show();
 

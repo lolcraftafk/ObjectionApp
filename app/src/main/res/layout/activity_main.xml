@@ -22,49 +22,8 @@
         android:layout_height="150px"
         android:background="#116AE0"
         app:layout_constraintBottom_toBottomOf="@+id/webview"
-        app:menu="@menu/menu_bottom_nav"
-        tools:ignore="MissingConstraints" >
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/getHelpButton"
-            android:layout_marginLeft="10px"
-            android:layout_width="200px"
-            android:layout_height="match_parent"
-            android:onClick="getHelp"
-            android:text="Get Help"
-            />
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/lawyersButton"
-            android:layout_width="200px"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="220px"
-            android:onClick="lawyersList"
-            android:background="@drawable/ic_lawyers_button"
-            />
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/recordingsButton"
-            android:layout_width="200px"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="430px"
-            android:onClick="recordingsList"
-            android:background="@drawable/ic_recordings_button"
-            />
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/learnLawButton"
-            android:layout_width="200px"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="640px"
-            android:onClick="lawLearnList"
-            android:background="@drawable/ic_lawlist_button"
-            />
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/menuButton"
-            android:layout_width="200px"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="850px"
-            android:onClick="menuButton"
-            android:background="@drawable/ic_menu_button"
-            />
+        app:menu="@menu/bottom_naviation"
+        >
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 

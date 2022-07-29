@@ -158,7 +158,7 @@ public class OnOffReceiver extends BroadcastReceiver implements LocationListener
         SmsManager sms=SmsManager.getDefault();
         String message = "I'm in trouble, help me here!!: https://www.google.com/maps/search/?api=1&query=" + String.valueOf(a.getLatitude()) + "%2C"+ String.valueOf(a.getLongitude());
         Log.d("TAG", "sendMessage: " + message);
-        sms.sendTextMessage("0507355597",null, message , null,null);
+        sms.sendTextMessage("0585301005",null, message , null,null);
     }
 }
 
