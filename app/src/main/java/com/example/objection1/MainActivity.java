@@ -42,8 +42,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         myWebView = (WebView) findViewById(R.id.webview);
 
+        ChatManager chatManager = new ChatManager(this, myWebView);
+
+        chatManager.sendMessage("Hello world!", "098762345");
 
         WebSettings settings = myWebView.getSettings();
         settings.setJavaScriptEnabled(true);

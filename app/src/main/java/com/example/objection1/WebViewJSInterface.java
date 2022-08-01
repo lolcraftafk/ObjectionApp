@@ -64,9 +64,6 @@ public class WebViewJSInterface {
     WebViewJSInterface(Context c, WebView webView) {
         mContext = c;
         myWebview = webView;
-        File Dir = new File(c.getFilesDir().getAbsolutePath());
-        recordings = Dir.listFiles();
-
     }
 
     // Starts the recording processes
@@ -151,9 +148,16 @@ public class WebViewJSInterface {
 
     @JavascriptInterface
     public void getRecordings(){
-        Log.d("TAG", "getRecordings: Getting recordings");
+        File dir = new File(mContext.getFilesDir().getAbsolutePath());
+        recordings = dir.listFiles();
+        Log.d("TAG", "getRecordings: Getting recordings " + recordings.length);
         for (int i = 0; i < recordings.length; i++){
-            myWebview.loadUrl("javascript:addRecording()");
+            myWebview.post(new Runnable() {
+                @Override
+                public void run() {
+                    myWebview.loadUrl("javascript:addRecording()");
+                }
+            });
         }
     }
 
