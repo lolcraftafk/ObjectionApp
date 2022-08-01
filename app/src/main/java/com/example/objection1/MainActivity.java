@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         nav = findViewById(R.id.bottom_nav);
 
         myWebView = (WebView) findViewById(R.id.webview);
-
         ChatManager chatManager = new ChatManager(this, myWebView);
 
         WebSettings settings = myWebView.getSettings();
