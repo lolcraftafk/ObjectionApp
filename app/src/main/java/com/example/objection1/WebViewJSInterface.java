@@ -177,6 +177,7 @@ public class WebViewJSInterface {
     @JavascriptInterface
     public void recieveMessages(String message){
         messageContent = message;
+        Log.d(message, "recieveMessages: " + message);
     }
     //Adds local app media to "content://" files
     public void addMedia(String name, String path) {
