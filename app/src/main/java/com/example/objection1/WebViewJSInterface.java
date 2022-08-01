@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Environment;
@@ -20,6 +21,8 @@ import android.telephony.SmsManager;
 import android.util.JsonReader;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,10 +54,19 @@ public class WebViewJSInterface {
     MediaRecorder mediaRecorder;
     Uri mediaStoreUri;
     String locationsPath;
+    WebView myWebview;
+
+    File[] recordings;
+    MediaPlayer mediaPlayer;
+    Boolean playing = false;
 
     //Constructor for JS interface and passing context from MainActivity
-    WebViewJSInterface(Context c) {
+    WebViewJSInterface(Context c, WebView webView) {
         mContext = c;
+        myWebview = webView;
+        File Dir = new File(c.getFilesDir().getAbsolutePath());
+        recordings = Dir.listFiles();
+
     }
 
     // Starts the recording processes
@@ -137,6 +149,24 @@ public class WebViewJSInterface {
         ActivityCompat.requestPermissions(new MainActivity(), new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.FOREGROUND_SERVICE, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.SEND_SMS}, 0);
     }
 
+    @JavascriptInterface
+    public void getRecordings(){
+        for (int i = 0; i < recordings.length; i++){
+            myWebview.loadUrl("javascript:addRecording()");
+        }
+    }
+
+    @JavascriptInterface
+    public void mediaPlayer(int i){
+        if(playing){
+            mediaPlayer.stop();
+            playing = false;
+        } else {
+            mediaPlayer = MediaPlayer.create(mContext, Uri.parse(recordings[i].getAbsolutePath()));
+            mediaPlayer.start();
+            playing = true;
+        }
+    }
     //Adds local app media to "content://" files
     public void addMedia(String name, String path) {
         ContentValues content = new ContentValues(3);

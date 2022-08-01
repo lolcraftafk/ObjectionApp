@@ -33,13 +33,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
-    public TextView textView;
-
-    Button getHelpButton;
-    Button recordingsButton;
-    Button lawyersButton;
-    Button learnLawButton;
-    Button menuButton;
 
     WebView myWebView;
 
@@ -67,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         myWebView.loadUrl("https://objection1.herokuapp.com/");
 
-        myWebView.addJavascriptInterface(new WebViewJSInterface(this), "Android");
+        myWebView.addJavascriptInterface(new WebViewJSInterface(this, myWebView), "Android");
 
         IntentFilter intentFilter = new IntentFilter();
 
@@ -87,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(OnOffReceiver.SCREEN_TOGGLE_TAG, "onCreate: screenOnOffReceiver is registered.");
 
-
     }
 
     public void getHelp(MenuItem v){
@@ -100,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void recordingsList(MenuItem v){
-        Intent recordings = new Intent(this, VoiceRecordingsActivity.class);
-        startActivity(recordings);
+        myWebView.loadUrl("https://objection1.herokuapp.com/recordings");
+
     }
 
     public void lawLearnList(MenuItem v){
