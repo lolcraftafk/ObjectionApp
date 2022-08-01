@@ -151,6 +151,7 @@ public class WebViewJSInterface {
 
     @JavascriptInterface
     public void getRecordings(){
+        Log.d("TAG", "getRecordings: Getting recordings");
         for (int i = 0; i < recordings.length; i++){
             myWebview.loadUrl("javascript:addRecording()");
         }
