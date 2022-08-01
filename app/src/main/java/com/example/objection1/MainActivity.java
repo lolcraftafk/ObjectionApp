@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         ChatManager chatManager = new ChatManager(this, myWebView);
 
-        chatManager.sendMessage("Hello world!", "0585301005");
-
         WebSettings settings = myWebView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setUseWideViewPort(true);
@@ -60,12 +58,15 @@ public class MainActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 Boolean menu = true;
                 for(int i = 0; i < menuNoPages.length; i++){
-                    Log.d("TAG", "onPageFinished: " + url);
                     if (url.contains(menuNoPages[i]) || "https://objection1.herokuapp.com/".contains(url)) {
                         menu = false;
                     }
                     if(url.contains("login")){
-                        
+
+                    }
+                    if(url.contains("chat")){
+                        chatManager.sendMessage("Hello world!", "0507355597");
+
                     }
 
                 }
@@ -110,9 +111,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
-
-        chatManager.getMessage();
-
 
         Log.d(OnOffReceiver.SCREEN_TOGGLE_TAG, "onCreate: screenOnOffReceiver is registered.");
 
