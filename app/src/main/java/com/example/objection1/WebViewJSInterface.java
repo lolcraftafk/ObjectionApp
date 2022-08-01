@@ -176,6 +176,7 @@ public class WebViewJSInterface {
     }
     @JavascriptInterface
     public void recieveMessages(String message){
+        Log.d("TAG", "recieveMessages: HMNMN");
         messageContent = message;
         Log.d(message, "recieveMessages: " + message);
     }
