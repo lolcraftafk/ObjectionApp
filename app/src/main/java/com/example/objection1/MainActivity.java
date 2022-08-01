@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         menu = false;
                     }
                     if(url.contains("login")){
-                        
+
                     }
                 }
                 if(menu){
