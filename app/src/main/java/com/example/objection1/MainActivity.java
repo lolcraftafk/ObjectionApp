@@ -135,9 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void menuButton(MenuItem v){
-        myWebView.loadUrl("https://objection1.herokuapp.com/logout");
-        Toast.makeText(this,"Logged out",Toast.LENGTH_SHORT).show();
-
+        myWebView.loadUrl("https://objection1.herokuapp.com/settings");
 
     }
 }
