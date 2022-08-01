@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.net.HttpCookie;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -27,22 +28,18 @@ public class ChatManager {
     }
 
     public void sendMessage(String message, String recipient){
-        List<HttpCookie> a;
-        a = HttpCookie.parse(cookieManager.getCookie("https://objection1.herokuapp.com/"));
-
-//        String pnumber = "0";
-//        for (HttpCookie n : a) {
-//            if(n.getName() == "pnumber")
-//            {
-//                pnumber = n.getValue();
-//            }
-//        }
 
         WebView webView = new WebView(mContext);
-        webView.setVisibility(View.INVISIBLE);
+
         String formData = "reciver_number=" + recipient + "&message="+message;
 
         webView.postUrl(MAIL_BOX_URL, formData.getBytes());
-        Log.d("TAG", "sendMessage: ");
+    }
+
+    public void getMessage(){
+        WebView webView = new WebView(mContext);
+        webView.addJavascriptInterface(new WebViewJSInterface(mContext, webView), "Android");
+        webView.loadUrl("https://objection1.herokuapp.com/mailbox");
+
     }
 }

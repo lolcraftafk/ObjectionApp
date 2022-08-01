@@ -1,5 +1,6 @@
 package com.example.objection1;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
@@ -33,21 +34,22 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
-
+    String[] menuNoPages = { "login", "signup", "emrn", "lawyer", "done", "recordings", "chat"};
     WebView myWebView;
-
+    BottomNavigationView nav;
     //On creation of main activity, finds WebView element, sets it up and starts it
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        nav = findViewById(R.id.bottom_nav);
 
         myWebView = (WebView) findViewById(R.id.webview);
 
         ChatManager chatManager = new ChatManager(this, myWebView);
 
-        chatManager.sendMessage("Hello world!", "098762345");
+        chatManager.sendMessage("Hello world!", "0585301005");
 
         WebSettings settings = myWebView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -55,8 +57,27 @@ public class MainActivity extends AppCompatActivity {
 
         myWebView.setWebViewClient(new WebViewClient() {
             @Override
+            public void onPageFinished(WebView view, String url) {
+                Boolean menu = true;
+                for(int i = 0; i < menuNoPages.length; i++){
+                    Log.d("TAG", "onPageFinished: " + url);
+                    if (url.contains(menuNoPages[i]) || "https://objection1.herokuapp.com/".contains(url)) {
+                        menu = false;
+                    }
+                    if(url.contains("login")){
+                        
+                    }
+                }
+                if(menu){
+                    nav.setVisibility(View.VISIBLE);
+                } else{
+                    nav.setVisibility(View.INVISIBLE);
+                }
+            };
+            @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 view.loadUrl(request.getUrl().toString());
+
                 return false;
             }
         });
@@ -81,10 +102,21 @@ public class MainActivity extends AppCompatActivity {
         // Register the broadcast receiver with the intent filter object.
         registerReceiver(reciever, intentFilter);
 
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                myWebView.goBack();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
+        chatManager.getMessage();
+
 
         Log.d(OnOffReceiver.SCREEN_TOGGLE_TAG, "onCreate: screenOnOffReceiver is registered.");
 
     }
+
 
     public void getHelp(MenuItem v){
         myWebView.loadUrl("https://objection1.herokuapp.com/emrn");
@@ -110,5 +142,4 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    //
 }

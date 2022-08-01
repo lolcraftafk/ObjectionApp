@@ -60,6 +60,8 @@ public class WebViewJSInterface {
     MediaPlayer mediaPlayer;
     Boolean playing = false;
 
+    public String messageContent;
+
     //Constructor for JS interface and passing context from MainActivity
     WebViewJSInterface(Context c, WebView webView) {
         mContext = c;
@@ -171,6 +173,10 @@ public class WebViewJSInterface {
             mediaPlayer.start();
             playing = true;
         }
+    }
+    @JavascriptInterface
+    public void recieveMessages(String message){
+        messageContent = message;
     }
     //Adds local app media to "content://" files
     public void addMedia(String name, String path) {
