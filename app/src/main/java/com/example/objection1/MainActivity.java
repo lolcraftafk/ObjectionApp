@@ -1,20 +1,7 @@
 package com.example.objection1;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
-
-import android.Manifest;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,14 +9,18 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     String[] menuNoPages = { "login", "signup", "emrn", "lawyer", "done", "recordings", "chat"};
     WebView myWebView;
     BottomNavigationView nav;
+    String message = "";
     //On creation of main activity, finds WebView element, sets it up and starts it
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                     if(url.contains("chat")){
-                        chatManager.sendMessage("Hello world!", "0507355597");
-
+                        chatManager.sendMessage("HIIII", "0507355597");
+                        String[] messages = getMessage(chatManager.message);
+                        for(int j = 0; j < messages.length; j ++){
+                            myWebView.loadUrl("javascript:addHisMessage("+messages[i]+");");
+                        }
                     }
 
                 }
@@ -86,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         myWebView.loadUrl("https://objection1.herokuapp.com/");
 
-        myWebView.addJavascriptInterface(new WebViewJSInterface(this, myWebView), "Android");
+        myWebView.addJavascriptInterface(new WebViewJSInterface(this, myWebView, chatManager), "Android");
 
         IntentFilter intentFilter = new IntentFilter();
 
@@ -137,5 +132,20 @@ public class MainActivity extends AppCompatActivity {
     public void menuButton(MenuItem v){
         myWebView.loadUrl("https://objection1.herokuapp.com/settings");
 
+    }
+
+    private String[] getMessage(String result) {
+        try {
+            JSONObject json= (JSONObject) new JSONTokener(result).nextValue();
+            JSONArray json2 = (JSONArray) json.getJSONArray("message");
+            String[] messages = new String[json2.length()];
+            for (int i = 0; i < json2.length(); i++){
+                messages[i] = (String)json2.get(i);
+            }
+            return messages;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

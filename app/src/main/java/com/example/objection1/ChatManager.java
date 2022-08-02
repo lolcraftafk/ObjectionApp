@@ -20,6 +20,7 @@ public class ChatManager {
     Context mContext;
     CookieManager cookieManager;
     WebView webView;
+    public String message;
 
     ChatManager(Context m, WebView webView1){
         webView = webView1;
@@ -37,8 +38,10 @@ public class ChatManager {
     }
 
     public void getMessage(){
+
         WebView webView = new WebView(mContext);
-        webView.addJavascriptInterface(new WebViewJSInterface(mContext, webView), "Android");
+
+        webView.addJavascriptInterface(new WebViewJSInterface(mContext, webView, this), "Android");
         webView.loadUrl("https://objection1.herokuapp.com/mailbox");
 
     }

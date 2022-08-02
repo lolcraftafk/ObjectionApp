@@ -60,12 +60,12 @@ public class WebViewJSInterface {
     MediaPlayer mediaPlayer;
     Boolean playing = false;
 
-    public String messageContent;
-
+    ChatManager chatManager;
     //Constructor for JS interface and passing context from MainActivity
-    WebViewJSInterface(Context c, WebView webView) {
+    WebViewJSInterface(Context c, WebView webView, ChatManager chatManager) {
         mContext = c;
         myWebview = webView;
+        this.chatManager = chatManager;
     }
 
     // Starts the recording processes
@@ -176,9 +176,9 @@ public class WebViewJSInterface {
     }
     @JavascriptInterface
     public void recieveMessages(String message){
-        Log.d("TAG", "recieveMessages: HMNMN");
-        messageContent = message;
         Log.d(message, "recieveMessages: " + message);
+        chatManager.message = message;
+
     }
     //Adds local app media to "content://" files
     public void addMedia(String name, String path) {
