@@ -1,6 +1,10 @@
 package com.example.objection1;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -49,17 +53,36 @@ public class MainActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 Boolean menu = true;
                 for(int i = 0; i < menuNoPages.length; i++){
-                    if (url.contains(menuNoPages[i]) || "https://objection1.herokuapp.com/".contains(url)) {
+                    if (url.contains(menuNoPages[i]) || url.replace("https://objection1.herokuapp.com/", "") == "") {
                         menu = false;
                     }
                     if(url.contains("login")){
 
                     }
+                    if(url.contains("guide")){
+                        myWebView.loadUrl("https://objection1.herokuapp.com/settings");
+                        Toast.makeText(new MainActivity(),"Cooming soon...", Toast.LENGTH_SHORT).show();
+                    }
                     if(url.contains("chat")){
-                        chatManager.sendMessage("HIIII", "0507355597");
-                        String[] messages = getMessage(chatManager.message);
-                        for(int j = 0; j < messages.length; j ++){
-                            myWebView.loadUrl("javascript:addHisMessage("+messages[i]+");");
+                        chatManager.sendMessage("HIIII", "0585301005");
+                        if(getMessage(chatManager.message) != null){
+                            String[] messages = getMessage(chatManager.message);
+                            for(int j = 0; j < messages.length; j ++){
+                                myWebView.loadUrl("javascript:addHisMessage("+messages[i]+");");
+                            }
+                        }
+                    }
+                    if(url.contains("instagram")){
+                        myWebView.loadUrl("https://objection1.herokuapp.com/");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://instagram.com/objection22?igshid=YmMyMTA2M2Y="));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setPackage("com.android.chrome");
+                        try {
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException ex) {
+                            // Chrome browser presumably not installed so allow user to choose instead
+                            intent.setPackage(null);
+                            startActivity(intent);
                         }
                     }
 
@@ -144,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return messages;
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e){
             e.printStackTrace();
         }
         return null;
