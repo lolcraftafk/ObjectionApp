@@ -61,16 +61,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if(url.contains("guide")){
                         myWebView.loadUrl("https://objection1.herokuapp.com/settings");
-                        Toast.makeText(new MainActivity(),"Cooming soon...", Toast.LENGTH_SHORT).show();
+                        lawLearnList(null);
                     }
                     if(url.contains("chat")){
-                        chatManager.sendMessage("HIIII", "0585301005");
-                        if(getMessage(chatManager.message) != null){
-                            String[] messages = getMessage(chatManager.message);
-                            for(int j = 0; j < messages.length; j ++){
-                                myWebView.loadUrl("javascript:addHisMessage("+messages[i]+");");
-                            }
-                        }
+//                        chatManager.sendMessage("HIIII", "0585301005");
+//                        chatManager.getMessage();
+//                        if(chatManager.message != null){
+//                            String[] messages = getMessage(chatManager.message);
+//                            for(int j = 0; j < messages.length; j ++){
+//                                myWebView.loadUrl("javascript:addHisMessage("+messages[i]+");");
+//                            }
+//                        }
                     }
                     if(url.contains("instagram")){
                         myWebView.loadUrl("https://objection1.herokuapp.com/");
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void lawyersList(MenuItem v){
-        Toast.makeText(this,"Coming Soon...",Toast.LENGTH_SHORT).show();
+        myWebView.loadUrl("https://objection1.herokuapp.com/lawyerlist");
     }
 
     public void recordingsList(MenuItem v){
@@ -158,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String[] getMessage(String result) {
+
+        Log.d("TAG", "getMessage: " + result);
         try {
             JSONObject json= (JSONObject) new JSONTokener(result).nextValue();
             JSONArray json2 = (JSONArray) json.getJSONArray("message");

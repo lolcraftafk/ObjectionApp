@@ -19,11 +19,11 @@ public class ChatManager {
 
     Context mContext;
     CookieManager cookieManager;
-    WebView webView;
+    WebView mWebView;
     public String message;
 
     ChatManager(Context m, WebView webView1){
-        webView = webView1;
+        mWebView = webView1;
         mContext =m;
         cookieManager = CookieManager.getInstance();
     }
@@ -38,11 +38,10 @@ public class ChatManager {
     }
 
     public void getMessage(){
-
-        WebView webView = new WebView(mContext);
-
-        webView.addJavascriptInterface(new WebViewJSInterface(mContext, webView, this), "Android");
-        webView.loadUrl("https://objection1.herokuapp.com/mailbox");
+        mWebView.loadUrl("https://objection1.herokuapp.com/mailbox");
+        mWebView.addJavascriptInterface(new WebViewJSInterface(mContext, mWebView, this), "Android");
+        mWebView.loadUrl("https://objection1.herokuapp.com/chat");
+        Log.d("TAG", "getMessage: " );
 
     }
 }
