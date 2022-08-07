@@ -33,16 +33,20 @@ public class MainActivity extends AppCompatActivity {
     WebView myWebView;
     BottomNavigationView nav;
     String message = "";
+    SOSButton sosButton;
+
     //On creation of main activity, finds WebView element, sets it up and starts it
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sosButton = new SOSButton(this);
+
         nav = findViewById(R.id.bottom_nav);
 
         myWebView = (WebView) findViewById(R.id.webview);
-        ChatManager chatManager = new ChatManager(this, myWebView);
+        ChatManager chatManager = new ChatManager(this, myWebView, sosButton);
 
         WebSettings settings = myWebView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -105,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
         myWebView.loadUrl("https://objection1.herokuapp.com/");
 
-        myWebView.addJavascriptInterface(new WebViewJSInterface(this, myWebView, chatManager), "Android");
+        myWebView.addJavascriptInterface(new WebViewJSInterface(this, myWebView, chatManager, sosButton), "Android");
 
         IntentFilter intentFilter = new IntentFilter();
 
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.setPriority(100);
 
         // Create a network change broadcast receiver.
-        OnOffReceiver reciever = new OnOffReceiver();
+        OnOffReceiver reciever = new OnOffReceiver(sosButton);
 
         // Register the broadcast receiver with the intent filter object.
         registerReceiver(reciever, intentFilter);
@@ -130,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
 
-        Log.d(OnOffReceiver.SCREEN_TOGGLE_TAG, "onCreate: screenOnOffReceiver is registered.");
 
     }
 

@@ -29,7 +29,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -56,80 +60,26 @@ public class WebViewJSInterface {
     String locationsPath;
     WebView myWebview;
 
+    SOSButton sosButton;
+
     File[] recordings;
     MediaPlayer mediaPlayer;
     Boolean playing = false;
+    Integer playingIndex = 0;
 
     ChatManager chatManager;
     //Constructor for JS interface and passing context from MainActivity
-    WebViewJSInterface(Context c, WebView webView, ChatManager chatManager) {
+    WebViewJSInterface(Context c, WebView webView, ChatManager chatManager, SOSButton a) {
         mContext = c;
         myWebview = webView;
         this.chatManager = chatManager;
+        sosButton = a;
     }
 
     // Starts the recording processes
     @JavascriptInterface
     public void startRecording() {
-        //Checks whether the app is already recording or not, if yes- stops, otherwise initiates another reocrding session.
-        mediaRecorder = new MediaRecorder();
-        if (recording) {
-            File location = new File(locationsPath);
-            mediaRecorder.stop();
-            recording = false;
-            Toast.makeText(mContext, "Recording stopped...", Toast.LENGTH_SHORT).show();
-
-            addMedia(newFile.getName(), newFile.getAbsolutePath());
-            Properties locations = new Properties();
-            if(location.exists()) {
-
-                try (InputStream io = new FileInputStream(location)){
-                    locations.loadFromXML(io);
-                    locations.setProperty(newFile.getAbsolutePath(), mediaStoreUri.getPath());
-                } catch (IOException e) {
-                    throw new RuntimeException();
-                }
-
-            } else {
-                OutputStream io;
-                try{
-                    location.createNewFile();
-                    locations.setProperty(newFile.getAbsolutePath(), mediaStoreUri.getPath());
-                    io = new FileOutputStream(location);
-                    locations.storeToXML(io, "Added location");
-                } catch (IOException e) {
-                    throw new RuntimeException();
-                }
-
-            }
-        } else {
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
-
-            String fileDir = mContext.getFilesDir() + "/objection_";
-
-            File directory = new File(fileDir);
-            File[] files = directory.listFiles();
-
-            String dateTimeNow = LocalDateTime.now().toString();
-
-            String newFileName = fileDir + dateTimeNow.replace(".", "_").replace(":", "_") + ".mp3";
-
-            newFile = new File(newFileName);
-
-            mediaRecorder.setOutputFile(newFile.getAbsolutePath());
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-            try {
-                mediaRecorder.prepare();
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-            }
-            mediaRecorder.start();
-
-            Toast.makeText(mContext, "Recording started...", Toast.LENGTH_SHORT).show();
-
-            recording = true;
-        }
+        sosButton.toggleRecording();
     }
 
 
@@ -152,22 +102,32 @@ public class WebViewJSInterface {
     public void getRecordings(){
         File dir = new File(mContext.getFilesDir().getAbsolutePath());
         recordings = dir.listFiles();
+
         Log.d("TAG", "getRecordings: Getting recordings " + recordings.length);
         for (int i = 0; i < recordings.length; i++){
-            myWebview.post(new Runnable() {
-                @Override
-                public void run() {
-                    myWebview.loadUrl("javascript:addRecording()");
-                }
-            });
+                myWebview.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        myWebview.loadUrl("javascript:addRecording()");
+                    }
+                });
+
         }
     }
 
     @JavascriptInterface
     public void mediaPlayer(int i){
         if(playing){
-            mediaPlayer.stop();
-            playing = false;
+            if(playingIndex == i){
+                mediaPlayer.stop();
+                playing = false;
+            } else {
+                mediaPlayer.stop();
+                playing = false;
+                mediaPlayer = MediaPlayer.create(mContext, Uri.parse(recordings[i].getAbsolutePath()));
+                mediaPlayer.start();
+                playing = true;
+            }
         } else {
             mediaPlayer = MediaPlayer.create(mContext, Uri.parse(recordings[i].getAbsolutePath()));
             mediaPlayer.start();
@@ -180,6 +140,33 @@ public class WebViewJSInterface {
         chatManager.message = message;
 
     }
+    @JavascriptInterface
+    public void receivePhoneNumbers(String message){
+        message = message.replace("&#34;", "\"");
+        Log.d("TAG", "receivePhoneNumbers: " + message);
+
+        try {
+            String fileDir = mContext.getCacheDir() + "/emerContacts.json";
+            File file = new File(fileDir);
+            file.createNewFile();
+            if (file.exists()) {
+                OutputStream fo = new FileOutputStream(file);
+                fo.write(message.getBytes(StandardCharsets.UTF_8));
+                fo.close();
+                System.out.println("file created: "+file);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+
+    }
+    @JavascriptInterface
+    public void changeName(String name, Integer i){
+        File dir = new File(mContext.getFilesDir().getAbsolutePath() + name);
+        recordings[i].renameTo(dir);
+    }
+
     //Adds local app media to "content://" files
     public void addMedia(String name, String path) {
         ContentValues content = new ContentValues(3);
